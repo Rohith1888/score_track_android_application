@@ -1,0 +1,5 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/black"/> <!-- Background color of the layout -->
+    <corners android:radius="24dp"/> <!-- Rounded corners with 12dp radius -->
+    <stroke android:color="#B0BEC5" android:width="1dp"/> <!-- Border color and width -->
+</shape>

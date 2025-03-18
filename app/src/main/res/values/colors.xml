@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="blue">#003092</color>
+    <color name="bottom_nav">#00879E</color>
+    <!-- Background color -->
+    <color name="cream">#F5F0E6</color>
+    <color name="tab_selected">#007C89</color> <!-- Teal color for selected -->
+    <color name="tab_unselected">#6E6E6E</color> <!-- Gray for unselected text -->
+    <color name="tab_background">#F5F0E6</color> <!-- Cream background -->
+    <color name="dark_gray">#707070</color>
+    <color name="light_gray">#E0E0E0</color>
+    <color name="light_cream">#FFF7E0</color>
+    <color name="primary_blue">#0A47A9</color>
+
+
+
+
+</resources>
