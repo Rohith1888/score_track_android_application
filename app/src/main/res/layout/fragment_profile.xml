@@ -163,17 +163,18 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Logout Button -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/logout_button"
+        android:background="@drawable/button_gradient"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="24dp"
         android:text="LOGOUT"
         android:textSize="16sp"
         android:textAllCaps="true"
-        android:backgroundTint="@color/primary_blue"
         android:textColor="@color/white"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        app:cornerRadius="12dp" /> <!-- Ensure rounded corners -->
+
 
 </LinearLayout>

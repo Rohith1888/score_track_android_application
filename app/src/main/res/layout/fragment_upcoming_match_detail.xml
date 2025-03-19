@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/white">
+
+    <!-- Match Info -->
+    <TextView
+        android:id="@+id/matchStadium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Eden Gardens, Kolkata"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:paddingBottom="8dp" />
+
+    <TextView
+        android:id="@+id/matchDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sat, 22 Mar"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:paddingBottom="4dp" />
+
+    <TextView
+        android:id="@+id/matchTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Starts at: 07:30 PM"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:paddingBottom="16dp" />
+
+    <!-- Teams Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp">
+
+        <!-- Team 1 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/team1Logo"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/kkr_logo" />
+
+            <TextView
+                android:id="@+id/team1Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="KKR"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:paddingTop="8dp" />
+        </LinearLayout>
+
+        <!-- VS Text -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VS"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:paddingHorizontal="24dp"
+            android:textColor="@color/black" />
+
+        <!-- Team 2 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/team2Logo"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/rcb_logo" />
+
+            <TextView
+                android:id="@+id/team2Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RCB"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:paddingTop="8dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- TabLayout for Playing XI -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabIndicatorColor="@color/black"
+        app:tabTextColor="@color/black"
+        app:tabSelectedTextColor="@color/black"
+        app:tabMode="fixed">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabTeam1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Knight Riders" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabTeam2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Royal Challengers" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:padding="8dp"/>
+
+
+</LinearLayout>

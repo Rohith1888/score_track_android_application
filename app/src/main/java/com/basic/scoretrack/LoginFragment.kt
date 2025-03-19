@@ -42,7 +42,6 @@ class LoginFragment : Fragment() {
             .commit()
 
         // Make Bottom Navigation Visible
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav_bar).visibility = View.VISIBLE
     }
 
     override fun onDestroyView() {

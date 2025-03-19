@@ -56,7 +56,9 @@
         android:text="Sign In"
         android:backgroundTint="@color/blue"
         android:textColor="@android:color/white"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        />
+
     <!-- OR Text -->
     <TextView
         android:id="@+id/or_text"

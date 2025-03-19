@@ -11,8 +11,18 @@
     <color name="tab_background">#F5F0E6</color> <!-- Cream background -->
     <color name="dark_gray">#707070</color>
     <color name="light_gray">#E0E0E0</color>
+    <color name="selected_color">#FFFFFF</color>
+    <color name="unselected_color">#B0BEC5</color>
+
     <color name="light_cream">#FFF7E0</color>
     <color name="primary_blue">#0A47A9</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="lavender">#8692f7</color>
+    <color name="grey">#d2d2d2</color>
 
 
 

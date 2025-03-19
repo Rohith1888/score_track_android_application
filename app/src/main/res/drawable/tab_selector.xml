@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Selected State: Gradient Background -->
     <item android:state_selected="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/tab_selected"/>
+            <gradient
+                android:startColor="#3333CC"
+                android:endColor="#9900CC"
+                android:angle="90"/>
             <corners android:radius="25dp"/>
         </shape>
     </item>
+
+    <!-- Default State: Solid Background -->
     <item>
         <shape android:shape="rectangle">
             <solid android:color="@color/tab_background"/>
+            <corners android:radius="25dp"/>
         </shape>
     </item>
+
 </selector>

@@ -4,21 +4,21 @@
     <item
         android:id="@+id/nav_home"
         android:title="Home"
-        android:icon="@drawable/home_icon" />
+        android:icon="@drawable/home_svgrepo_com" />
 
     <item
         android:id="@+id/nav_matches"
         android:title="Matches"
-        android:icon="@drawable/matches" />
+        android:icon="@drawable/stats_svgrepo_com" />
     <item
         android:id="@+id/nav_teams"
         android:title="Teams"
-        android:icon="@drawable/teams" />
+        android:icon="@drawable/team_3_svgrepo_com" />
 
 
     <item
         android:id="@+id/nav_account"
         android:title="Account"
-        android:icon="@drawable/account" />
+        android:icon="@drawable/account_svgrepo_com" />
 
 </menu>

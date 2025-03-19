@@ -7,8 +7,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class MatchAdapter(private val matches: List<Match>) :
-    RecyclerView.Adapter<MatchAdapter.MatchViewHolder>() {
+class MatchAdapter(
+    private val matches: List<Match>,
+    private val onItemClick: (Match) -> Unit // Click listener
+) : RecyclerView.Adapter<MatchAdapter.MatchViewHolder>() {
 
     class MatchViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val stadiumText: TextView = view.findViewById(R.id.stadiumText)
@@ -35,6 +37,11 @@ class MatchAdapter(private val matches: List<Match>) :
         holder.team1Name.text = match.team1
         holder.team2Logo.setImageResource(match.team2Logo)
         holder.team2Name.text = match.team2
+
+        // Set click listener
+        holder.itemView.setOnClickListener {
+            onItemClick(match)
+        }
     }
 
     override fun getItemCount() = matches.size

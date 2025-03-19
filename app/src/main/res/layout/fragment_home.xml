@@ -13,12 +13,12 @@
         android:padding="16dp">
 
         <!-- IPL Banner -->
-        <ImageView
-            android:id="@+id/ipl_banner"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/ipl_banner_slider"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/ipl_banner" />
+            android:autoSizeTextType="uniform"/>
+
 
         <!-- Top Matches Section -->
         <TextView
@@ -35,90 +35,167 @@
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="none">
+            android:scrollbars="none"
+            android:paddingVertical="10dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingVertical="8dp">
+                android:orientation="horizontal">
 
                 <!-- Match Card 1 -->
                 <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="120dp"
+                    android:layout_width="220dp"
+                    android:layout_height="140dp"
                     android:background="@drawable/match_card_bg"
-                    android:padding="12dp"
+                    android:padding="16dp"
                     android:orientation="vertical"
-                    android:layout_marginEnd="12dp">
+                    android:layout_marginEnd="12dp"
+                    android:elevation="6dp"
+
+                    android:radius="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="6dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/kkr_logo"
+                            android:scaleType="fitCenter" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="KKR vs RCB"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/white"
+                            android:layout_marginStart="8dp"/>
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1st T20 : KKR VS RCB"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Eden Gardens, Kolkata, 22 March, Saturday"
+                        android:text="Eden Gardens, Kolkata"
                         android:textSize="12sp"
-                        android:textColor="@android:color/white" />
+                        android:textColor="@android:color/white"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="22 March, Saturday"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/holo_orange_light"
+                        android:layout_marginTop="4dp"/>
                 </LinearLayout>
 
                 <!-- Match Card 2 -->
                 <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="120dp"
+                    android:layout_width="220dp"
+                    android:layout_height="140dp"
                     android:background="@drawable/match_card_bg"
-                    android:padding="12dp"
+                    android:padding="16dp"
                     android:orientation="vertical"
-                    android:layout_marginEnd="12dp">
+                    android:layout_marginEnd="12dp"
+                    android:elevation="6dp"
+                    android:radius="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="6dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/srh_logo"
+                            android:scaleType="fitCenter" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SRH vs RR"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/white"
+                            android:layout_marginStart="8dp"/>
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2nd T20 : SRH VS RR"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Rajiv Gandhi International Stadium, Hyderabad, 23 March, Sunday"
+                        android:text="Rajiv Gandhi Intl. Stadium"
                         android:textSize="12sp"
-                        android:textColor="@android:color/white" />
+                        android:textColor="@android:color/white"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="23 March, Sunday"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/holo_orange_light"
+                        android:layout_marginTop="4dp"/>
                 </LinearLayout>
 
-                <!-- Match Card 3 (Example Extra Card) -->
+                <!-- Match Card 3 -->
                 <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="120dp"
+                    android:layout_width="220dp"
+                    android:layout_height="140dp"
                     android:background="@drawable/match_card_bg"
-                    android:padding="12dp"
-                    android:orientation="vertical">
+                    android:padding="16dp"
+                    android:orientation="vertical"
+                    android:elevation="6dp"
+                    android:radius="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="6dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/mi_logo"
+                            android:scaleType="fitCenter" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="MI vs CSK"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/white"
+                            android:layout_marginStart="8dp"/>
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="3rd T20 : MI VS CSK"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Wankhede Stadium, Mumbai, 24 March, Monday"
+                        android:text="Wankhede Stadium, Mumbai"
                         android:textSize="12sp"
-                        android:textColor="@android:color/white" />
+                        android:textColor="@android:color/white"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="24 March, Monday"
+                        android:textSize="12sp"
+                        android:textColor="@android:color/holo_orange_light"
+                        android:layout_marginTop="4dp"/>
                 </LinearLayout>
 
             </LinearLayout>
         </HorizontalScrollView>
+
         <!-- Top Stories Section -->
         <TextView
             android:id="@+id/top_stories_title"
