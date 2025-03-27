@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -50,123 +53,152 @@ class FinishedMatchDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val stadiumText = view.findViewById<TextView>(R.id.matchStadium)
-        val matchDate = view.findViewById<TextView>(R.id.matchDate)
-        val matchResult = view.findViewById<TextView>(R.id.matchResult)
-        val team1LogoView = view.findViewById<ImageView>(R.id.team1Logo)
-        val team1Name = view.findViewById<TextView>(R.id.team1Name)
-        val team1ScoreView = view.findViewById<TextView>(R.id.team1Score)
-        val team2LogoView = view.findViewById<ImageView>(R.id.team2Logo)
-        val team2Name = view.findViewById<TextView>(R.id.team2Name)
-        val team2ScoreView = view.findViewById<TextView>(R.id.team2Score)
         val tabLayout = view.findViewById<TabLayout>(R.id.tabLayout)
         val viewPager = view.findViewById<ViewPager2>(R.id.viewPager)
 
-        stadiumText.text = stadium
-        matchDate.text = date
-        matchResult.text = result
-        team1Name.text = team1
-        team1ScoreView.text = team1Score
-        team2Name.text = team2
-        team2ScoreView.text = team2Score
-
-        team1LogoView.setImageResource(team1Logo)
-        team2LogoView.setImageResource(team2Logo)
-
         val teams = getPlayersForSport(sportType)
-        val pagerAdapter = ViewPagerAdapter(this, teams.first, teams.second)
+        val pagerAdapter = ViewPagerAdapterFinished(this, teams.first, teams.second)
         viewPager.adapter = pagerAdapter
 
         TabLayoutMediator(
             tabLayout, viewPager
         ) { tab: TabLayout.Tab, position: Int ->
-            tab.setText(if (position == 0) team1 else team2)
+            tab.text = if (position == 0)  team1 else team2
         }.attach()
     }
 
-    private fun getPlayersForSport(sport: String?): Pair<List<Player>, List<Player>> {
-        return if ("Cricket" == sport) Pair(cricketTeam1Players, cricketTeam2Players) else Pair(
-            kabaddiTeam1Players,
-            kabaddiTeam2Players
+    private fun getPlayersForSport(sport: String?): Pair<List<BattingStats>, List<BattingStats>> {
+        return if ("Cricket" == sport) Pair(cricketBattingStats, cricketBowlingStats) else Pair(
+            kabaddiTeam1Stats,
+            kabaddiTeam2Stats
         )
     }
+
+    private val cricketBattingStats = listOf(
+        BattingStats("Aiden Markram", 15, 13, 1, 1, 115.38),
+        BattingStats("Mitchell Marsh", 72, 36, 6, 6, 200.00),
+        BattingStats("Nicholas Pooran", 75, 30, 6, 7, 250.00),
+        BattingStats("David Miller", 27, 19, 1, 2, 142.11)
+    )
+
+    private val cricketBowlingStats = listOf(
+        BattingStats("Jasprit Bumrah", 2, 18, 0, 0, 0.00),
+        BattingStats("Rashid Khan", 3, 24, 0, 0, 0.00),
+        BattingStats("Trent Boult", 1, 12, 0, 0, 0.00),
+        BattingStats("Pat Cummins", 4, 28, 0, 0, 0.00)
+    )
+
+    private val kabaddiTeam1Stats = listOf(
+        BattingStats("Pawan Sehrawat", 12, 10, 0, 0, 120.00),
+        BattingStats("Manjeet Chhillar", 8, 9, 0, 0, 88.89),
+        BattingStats("Surender Nada", 4, 6, 0, 0, 66.67),
+        BattingStats("Ajay Thakur", 10, 7, 0, 0, 142.86)
+    )
+
+    private val kabaddiTeam2Stats = listOf(
+        BattingStats("Rahul Chaudhari", 14, 11, 0, 0, 127.27),
+        BattingStats("Deepak Hooda", 10, 9, 0, 0, 111.11),
+        BattingStats("Fazel Atrachali", 5, 7, 0, 0, 71.43),
+        BattingStats("Nitin Tomar", 11, 8, 0, 0, 137.50)
+    )
     companion object {
         fun newInstance(
-            stadium: String, date: String, result: String,
-            team1: String, team2: String, sportType: String,
-            team1Logo: Int, team2Logo: Int,
-            team1Score: String, team2Score: String
-        ) = FinishedMatchDetailFragment().apply {
-            arguments = Bundle().apply {
-                putString("STADIUM", stadium)
-                putString("DATE", date)
-                putString("RESULT", result)  // Added missing result parameter
-                putString("TEAM1", team1)
-                putInt("TEAM1_LOGO", team1Logo)
-                putString("TEAM1_SCORE", team1Score)  // Added missing team1Score
-                putString("TEAM2", team2)
-                putInt("TEAM2_LOGO", team2Logo)
-                putString("TEAM2_SCORE", team2Score)  // Added missing team2Score
-                putString("SPORT_TYPE", sportType)  // Passing the sport type
+            stadium: String,
+            date: String,
+            result: String,
+            team1: String,
+            team2: String,
+            sportType: String,
+            team1Logo: Int,
+            team2Logo: Int,
+            team1Score: String,
+            team2Score: String
+        ): FinishedMatchDetailFragment {
+            return FinishedMatchDetailFragment().apply {
+                arguments = Bundle().apply {
+                    putString("STADIUM", stadium)
+                    putString("DATE", date)
+                    putString("RESULT", result)
+                    putString("TEAM1", team1)
+                    putString("TEAM2", team2)
+                    putString("SPORT_TYPE", sportType)
+                    putInt("TEAM1_LOGO", team1Logo)
+                    putInt("TEAM2_LOGO", team2Logo)
+                    putString("TEAM1_SCORE", team1Score)
+                    putString("TEAM2_SCORE", team2Score)
+                }
             }
         }
-
     }
 
-        private val cricketTeam1Players = listOf(
-            Player("Shreyas Iyer", "Right-hand batsman"),
-            Player("Sunil Narine", "Left-hand batsman, Off-spin bowler"),
-            Player("Andre Russell", "Right-hand batsman, Fast bowler"),
-            Player("Rinku Singh", "Left-hand batsman"),
-            Player("Varun Chakravarthy", "Right-arm leg spin bowler"),
-            Player("Mitchell Starc", "Left-arm fast bowler"),
-            Player("Venkatesh Iyer", "All-rounder"),
-            Player("Rahmanullah Gurbaz", "Wicketkeeper, Right-hand batsman"),
-            Player("Nitish Rana", "Left-hand batsman, Off-spin bowler"),
-            Player("Lockie Ferguson", "Right-arm fast bowler"),
-            Player("Harshit Rana", "Right-arm fast bowler")
-        )
+}
 
-        private val cricketTeam2Players = listOf(
-            Player("Virat Kohli", "Right-hand batsman"),
-            Player("Faf du Plessis", "Right-hand batsman"),
-            Player("Glenn Maxwell", "All-rounder"),
-            Player("Dinesh Karthik", "Wicketkeeper, Right-hand batsman"),
-            Player("Mohammed Siraj", "Right-arm fast bowler"),
-            Player("Harshal Patel", "Right-arm medium-fast bowler"),
-            Player("Cameron Green", "All-rounder"),
-            Player("Rajat Patidar", "Right-hand batsman"),
-            Player("Josh Hazlewood", "Right-arm fast bowler"),
-            Player("Wanindu Hasaranga", "Leg-spin bowler, All-rounder"),
-            Player("Karn Sharma", "Leg-spin bowler")
-        )
+class ViewPagerAdapterFinished(fragment: Fragment, private val team1Players: List<BattingStats>, private val team2Players: List<BattingStats>) :
+    FragmentStateAdapter(fragment) {
 
-        private val kabaddiTeam1Players = listOf(
-            Player("Pawan Sehrawat", "Raider"),
-            Player("Manjeet Chhillar", "All-rounder"),
-            Player("Surender Nada", "Defender - Left Corner"),
-            Player("Ajay Thakur", "Raider"),
-            Player("Sandeep Narwal", "All-rounder"),
-            Player("Parvesh Bhainswal", "Defender - Left Cover"),
-            Player("Vishal Bhardwaj", "Defender - Left Corner"),
-            Player("Naveen Kumar", "Raider"),
-            Player("Mahender Singh", "Defender - Right Cover"),
-            Player("Mohit Chhillar", "Defender - Right Corner"),
-            Player("Rohit Kumar", "Raider")
-        )
+    override fun getItemCount(): Int = 2
 
-        private val kabaddiTeam2Players = listOf(
-            Player("Fazel Atrachali", "Defender - Left Corner"),
-            Player("Deepak Hooda", "All-rounder"),
-            Player("Rahul Chaudhari", "Raider"),
-            Player("Nitin Tomar", "Raider"),
-            Player("Girish Ernak", "Defender - Left Corner"),
-            Player("Siddharth Desai", "Raider"),
-            Player("Ravinder Pahal", "Defender - Right Corner"),
-            Player("Abhishek Singh", "Raider"),
-            Player("Neeraj Kumar", "Defender - Right Cover"),
-            Player("Sunil Kumar", "Defender - Left Cover"),
-            Player("Pradeep Narwal", "Raider")
-        )
+    override fun createFragment(position: Int): Fragment {
+        return PlayerListFragmentFinished(if (position == 0) team1Players else team2Players)
     }
+}
+
+// Data class for Batting Stats
+data class BattingStats(
+    val playerName: String,
+    val runs: Int,
+    val balls: Int,
+    val fours: Int,
+    val sixes: Int,
+    val strikeRate: Double
+)
+
+class PlayerListFragmentFinished(private val players: List<BattingStats>) : Fragment() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_player_list, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = BattingAdapter(players)
+    }
+}
+class BattingAdapter(private val battingList: List<BattingStats>) :
+    RecyclerView.Adapter<BattingAdapter.BattingViewHolder>() {
+
+    inner class BattingViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val playerName: TextView = view.findViewById(R.id.playerName)
+        val playerRuns: TextView = view.findViewById(R.id.playerRuns)
+        val playerBalls: TextView = view.findViewById(R.id.playerBalls)
+        val playerFours: TextView = view.findViewById(R.id.playerFours)
+        val playerSixes: TextView = view.findViewById(R.id.playerSixes)
+        val playerStrikeRate: TextView = view.findViewById(R.id.playerStrikeRate)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BattingViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_batting_score, parent, false)
+        return BattingViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: BattingViewHolder, position: Int) {
+        val player = battingList[position]
+        holder.playerName.text = player.playerName
+        holder.playerRuns.text = player.runs.toString()
+        holder.playerBalls.text = player.balls.toString()
+        holder.playerFours.text = player.fours.toString()
+        holder.playerSixes.text = player.sixes.toString()
+        holder.playerStrikeRate.text = String.format("%.2f", player.strikeRate)
+    }
+
+    override fun getItemCount() = battingList.size
+}
+
+
 
