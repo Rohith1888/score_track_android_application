@@ -2,7 +2,7 @@ package com.basic.scoretrack
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class ViewPagerAdapter(fragment: Fragment, private val team1Players: List<Player>, private val team2Players: List<Player>) :
+class ViewPagerAdapter(fragment: Fragment, private val team1Players: List<PlayerResponseUpcoming>, private val team2Players: List<PlayerResponseUpcoming>) :
     FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 2

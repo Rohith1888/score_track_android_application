@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class PlayerListAdapter(private val players: List<Player>) :
+class PlayerListAdapter(private val players: List<PlayerResponseUpcoming>) :
     RecyclerView.Adapter<PlayerListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

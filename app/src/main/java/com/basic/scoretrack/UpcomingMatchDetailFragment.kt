@@ -1,38 +1,49 @@
 package com.basic.scoretrack
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class UpcomingMatchDetailFragment : Fragment() {
 
+    private var matchId: Int? = null
     private var stadium: String? = null
     private var date: String? = null
     private var time: String? = null
     private var team1: String? = null
-    private var team1Logo: Int? = null
+    private var team1Logo: String? = null
     private var team2: String? = null
-    private var team2Logo: Int? = null
-    private var sportType: String? = null  // Added to differentiate Cricket and Kabaddi
+    private var team2Logo: String? = null
+    private var sportType: String? = null
+
+    private lateinit var team1Players: List<PlayerResponseUpcoming>
+    private lateinit var team2Players: List<PlayerResponseUpcoming>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+            matchId = it.getInt("MATCH_ID")
             stadium = it.getString("STADIUM")
             date = it.getString("DATE")
             time = it.getString("TIME")
             team1 = it.getString("TEAM1")
-            team1Logo = it.getInt("TEAM1_LOGO")
+            team1Logo = it.getString("TEAM1_LOGO")
             team2 = it.getString("TEAM2")
-            team2Logo = it.getInt("TEAM2_LOGO")
-            sportType = it.getString("SPORT_TYPE")  // Retrieve sport type
+            team2Logo = it.getString("TEAM2_LOGO")
+            sportType = it.getString("SPORT_TYPE")
         }
     }
 
@@ -55,107 +66,119 @@ class UpcomingMatchDetailFragment : Fragment() {
         val team2Name: TextView = view.findViewById(R.id.team2Name)
         val tabLayout: TabLayout = view.findViewById(R.id.tabLayout)
         val viewPager: ViewPager2 = view.findViewById(R.id.viewPager)
-
+        Log.d("MatchDetails", "Match ID: $matchId")
         stadiumText.text = stadium
         matchDate.text = date
         matchTime.text = "Starts at: $time"
         team1Name.text = team1
         team2Name.text = team2
+        context?.let {
+            Glide.with(it)
+                .load(team1Logo)
+                .placeholder(R.drawable.profile_image)
+                .into(team1LogoView)
 
-        team1Logo?.let { team1LogoView.setImageResource(it) }
-        team2Logo?.let { team2LogoView.setImageResource(it) }
+            Glide.with(it)
+                .load(team2Logo)
+                .placeholder(R.drawable.profile_image)
+                .into(team2LogoView)
+        }
 
-        val (team1Players, team2Players) = getPlayersForSport(sportType)
+        matchId?.let { id ->
+            GlobalScope.launch(Dispatchers.Main) {
+                try {
+                    val matchDetails = RetrofitClient.instance.getMatchDetails(id)
 
-        val pagerAdapter = ViewPagerAdapter(this, team1Players, team2Players)
-        viewPager.adapter = pagerAdapter
+                    // ✅ Log full matchDetails response
+                    Log.d("MatchDetails", "MatchDetails response: $matchDetails")
 
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = if (position == 0) team1 else team2
-        }.attach()
+                    team1Players = matchDetails.team1Players
+                    team2Players = matchDetails.team2Players
+
+                    // Also log team players
+                    Log.d("MatchDetails", "Team1Players: $team1Players")
+                    Log.d("MatchDetails", "Team2Players: $team2Players")
+
+                    updateUIWithMatchDetails(matchDetails)
+
+                } catch (e: Exception) {
+                    Log.d("MatchDetails", "Fetching match details for ID: $id")
+
+                    Log.e("MatchDetails", "Error fetching match details", e)
+                    Toast.makeText(requireContext(), "Failed to load match details", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
     }
 
-    // Function to return player lists dynamically based on the sport type
-    private fun getPlayersForSport(sport: String?): Pair<List<Player>, List<Player>> {
-        return if (sport == "Cricket") {
-            cricketTeam1Players to cricketTeam2Players
-        } else {
-            kabaddiTeam1Players to kabaddiTeam2Players
+    private fun updateUIWithMatchDetails(matchDetails: MatchDetailsResponse) {
+        stadium = matchDetails.stadium
+        date = matchDetails.date
+        time = matchDetails.time
+        team1 = matchDetails.team1
+        team1Logo = matchDetails.team1Logo
+        team2 = matchDetails.team2
+        team2Logo = matchDetails.team2Logo
+        sportType = matchDetails.sportType
+
+
+        view?.findViewById<TextView>(R.id.matchStadium)?.text = stadium
+        view?.findViewById<TextView>(R.id.matchDate)?.text = date
+        view?.findViewById<TextView>(R.id.matchTime)?.text = "Starts at: $time"
+        view?.findViewById<TextView>(R.id.team1Name)?.text = team1
+        view?.findViewById<TextView>(R.id.team2Name)?.text = team2
+
+        context?.let {
+            view?.findViewById<ImageView>(R.id.team1Logo)?.let { team1LogoView ->
+                Glide.with(it)
+                    .load(team1Logo)
+                    .placeholder(R.drawable.profile_image)
+                    .into(team1LogoView)
+            }
+
+            view?.findViewById<ImageView>(R.id.team2Logo)?.let { team2LogoView ->
+                Glide.with(it)
+                    .load(team2Logo)
+                    .placeholder(R.drawable.profile_image)
+                    .into(team2LogoView)
+            }
         }
+
+        // Set up the ViewPager with player data
+        val pagerAdapter = ViewPagerAdapter(this, team1Players, team2Players)
+        view?.findViewById<ViewPager2>(R.id.viewPager)?.adapter = pagerAdapter
+
+        TabLayoutMediator(view?.findViewById(R.id.tabLayout)!!, view?.findViewById(R.id.viewPager)!!) { tab, position ->
+            tab.text = if (position == 0) team1 else team2
+        }.attach()
+
     }
 
     companion object {
         fun newInstance(
-            stadium: String, date: String, time: String,
-            team1: String, team1Logo: Int, team2: String, team2Logo: Int,
-            sportType: String // New argument for identifying the sport
+            matchId: Int,
+            stadium: String,
+            date: String,
+            time: String,
+            team1: String,
+            team1Logo: String,
+            team2: String,
+            team2Logo: String,
+            sportType: String
         ) = UpcomingMatchDetailFragment().apply {
             arguments = Bundle().apply {
+                putInt("MATCH_ID", matchId)
                 putString("STADIUM", stadium)
                 putString("DATE", date)
                 putString("TIME", time)
                 putString("TEAM1", team1)
-                putInt("TEAM1_LOGO", team1Logo)
+                putString("TEAM1_LOGO", team1Logo)
                 putString("TEAM2", team2)
-                putInt("TEAM2_LOGO", team2Logo)
-                putString("SPORT_TYPE", sportType)  // Passing the sport type
+                putString("TEAM2_LOGO", team2Logo)
+                putString("SPORT_TYPE", sportType)
             }
         }
-
-        private val cricketTeam1Players = listOf(
-            Player("Shreyas Iyer", "Right-hand batsman"),
-            Player("Sunil Narine", "Left-hand batsman, Off-spin bowler"),
-            Player("Andre Russell", "Right-hand batsman, Fast bowler"),
-            Player("Rinku Singh", "Left-hand batsman"),
-            Player("Varun Chakravarthy", "Right-arm leg spin bowler"),
-            Player("Mitchell Starc", "Left-arm fast bowler"),
-            Player("Venkatesh Iyer", "All-rounder"),
-            Player("Rahmanullah Gurbaz", "Wicketkeeper, Right-hand batsman"),
-            Player("Nitish Rana", "Left-hand batsman, Off-spin bowler"),
-            Player("Lockie Ferguson", "Right-arm fast bowler"),
-            Player("Harshit Rana", "Right-arm fast bowler")
-        )
-
-        private val cricketTeam2Players = listOf(
-            Player("Virat Kohli", "Right-hand batsman"),
-            Player("Faf du Plessis", "Right-hand batsman"),
-            Player("Glenn Maxwell", "All-rounder"),
-            Player("Dinesh Karthik", "Wicketkeeper, Right-hand batsman"),
-            Player("Mohammed Siraj", "Right-arm fast bowler"),
-            Player("Harshal Patel", "Right-arm medium-fast bowler"),
-            Player("Cameron Green", "All-rounder"),
-            Player("Rajat Patidar", "Right-hand batsman"),
-            Player("Josh Hazlewood", "Right-arm fast bowler"),
-            Player("Wanindu Hasaranga", "Leg-spin bowler, All-rounder"),
-            Player("Karn Sharma", "Leg-spin bowler")
-        )
-
-        private val kabaddiTeam1Players = listOf(
-            Player("Pawan Sehrawat", "Raider"),
-            Player("Manjeet Chhillar", "All-rounder"),
-            Player("Surender Nada", "Defender - Left Corner"),
-            Player("Ajay Thakur", "Raider"),
-            Player("Sandeep Narwal", "All-rounder"),
-            Player("Parvesh Bhainswal", "Defender - Left Cover"),
-            Player("Vishal Bhardwaj", "Defender - Left Corner"),
-            Player("Naveen Kumar", "Raider"),
-            Player("Mahender Singh", "Defender - Right Cover"),
-            Player("Mohit Chhillar", "Defender - Right Corner"),
-            Player("Rohit Kumar", "Raider")
-        )
-
-        private val kabaddiTeam2Players = listOf(
-            Player("Fazel Atrachali", "Defender - Left Corner"),
-            Player("Deepak Hooda", "All-rounder"),
-            Player("Rahul Chaudhari", "Raider"),
-            Player("Nitin Tomar", "Raider"),
-            Player("Girish Ernak", "Defender - Left Corner"),
-            Player("Siddharth Desai", "Raider"),
-            Player("Ravinder Pahal", "Defender - Right Corner"),
-            Player("Abhishek Singh", "Raider"),
-            Player("Neeraj Kumar", "Defender - Right Cover"),
-            Player("Sunil Kumar", "Defender - Left Cover"),
-            Player("Pradeep Narwal", "Raider")
-        )
     }
 }
+

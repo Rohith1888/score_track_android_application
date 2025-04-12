@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "9843497945",
+    "project_id": "scoretrack-28447",
+    "storage_bucket": "scoretrack-28447.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:9843497945:android:903f5de9754fe074ee17c8",
+        "android_client_info": {
+          "package_name": "com.basic.scoretrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "9843497945-940eandobor4qh370a8agbgfn1bqamdg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.basic.scoretrack",
+            "certificate_hash": "8487748531388075f986129dc5d227aff624c267"
+          }
+        },
+        {
+          "client_id": "9843497945-3lnsdbon0v0ggpn0peuqgeap2asv29s5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDOSKsqyaorffV7h35uBvQQcdKXs7XKnM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "9843497945-3lnsdbon0v0ggpn0peuqgeap2asv29s5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

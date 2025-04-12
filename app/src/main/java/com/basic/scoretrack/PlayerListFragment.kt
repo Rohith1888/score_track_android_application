@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class PlayerListFragment(private val players: List<Player>) : Fragment() {
+class PlayerListFragment(private val players: List<PlayerResponseUpcoming>) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -1,6 +1,7 @@
 package com.basic.scoretrack
 
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -31,17 +32,26 @@ class RegisterFragment : Fragment() {
 
             RetrofitClient.instance.registerUser(user).enqueue(object : Callback<User> {
                 override fun onResponse(call: Call<User>, response: Response<User>) {
+                    Log.d("RegisterDebug", "Request URL: ${call.request().url}")
+                    Log.d("RegisterDebug", "Request body: ${call.request().body}")
+                    Log.d("RegisterDebug", "Response code: ${response.code()}")
+                    Log.d("RegisterDebug", "Is successful: ${response.isSuccessful}")
+                    Log.d("RegisterDebug", "Response body: ${response.body()}")
+                    Log.d("RegisterDebug", "Error body: ${response.errorBody()?.string()}")
                     if (response.isSuccessful) {
                         Toast.makeText(requireContext(), "Registration successful!", Toast.LENGTH_SHORT).show()
                         navigateToLogin() // Navigate instead of using finish()
                     } else {
+
                         Toast.makeText(requireContext(), "Registration failed!", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<User>, t: Throwable) {
+                    Log.e("RegisterDebug", "Network error: ${t.localizedMessage}", t)
                     Toast.makeText(requireContext(), "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
                 }
+
             })
         }
 

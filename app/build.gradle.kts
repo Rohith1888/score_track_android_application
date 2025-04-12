@@ -1,13 +1,15 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    id("kotlin-parcelize")
+    id("com.google.gms.google-services")
+    kotlin("android")
 }
 
 android {
     namespace = "com.basic.scoretrack"
     compileSdk = 35
-
+    buildFeatures{
+        viewBinding = true
+    }
     defaultConfig {
         applicationId = "com.basic.scoretrack"
         minSdk = 35
@@ -58,6 +60,13 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     // https://mvnrepository.com/artifact/androidx.cardview/cardview
     runtimeOnly("androidx.cardview:cardview:1.0.0-alpha1")
+    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth:22.1.2")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.github.bumptech.glide:glide:4.14.2")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 
 
 }
