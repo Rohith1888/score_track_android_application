@@ -1,14 +1,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="6dp">
+    android:padding="6dp"
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/playerName"
         android:layout_width="0dp"
         android:layout_weight="2"
         android:textStyle="bold"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/overs"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/maidens"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
         android:layout_height="wrap_content" />
 
     <TextView
@@ -19,28 +33,14 @@
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/balls"
+        android:id="@+id/wickets"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:gravity="center"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/fours"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/sixes"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/strikeRate"
+        android:id="@+id/economy"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:gravity="end"

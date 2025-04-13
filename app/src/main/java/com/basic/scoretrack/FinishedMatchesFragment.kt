@@ -37,8 +37,7 @@ class FinishedMatchesFragment : Fragment() {
             match.team1Logo,
             match.team2Logo,
             match.team1Score,
-            match.team2Score,
-
+            match.team2Score
         )
 
         requireActivity().supportFragmentManager.beginTransaction()
