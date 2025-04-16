@@ -36,6 +36,7 @@ class LiveMatchesFragment : Fragment() {
         }
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -106,16 +107,8 @@ class LiveMatchesFragment : Fragment() {
 
         val fragment = LiveMatchDetailFragment.newInstance(
             match.id,
-            match.stadium,
-            match.date,
-            match.team1,
-            match.team2,
-            sportType ?: "Cricket",
-            team1Logo.toString(),
-            team2Logo.toString(),
-            match.team1Score,
-            match.team2Score,
-            match.matchDecision
+            "Cricket",
+
         )
 
         requireActivity().supportFragmentManager.beginTransaction()

@@ -19,7 +19,7 @@
             android:id="@+id/matchStadium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Narendra Modi Stadium, Ahmedabad"
+            android:text="Stadium Name"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/black"/>
@@ -28,7 +28,7 @@
             android:id="@+id/matchDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="26 May 24"
+            android:text="Date and Day"
             android:textSize="14sp"
             android:textColor="@color/black"
             android:paddingBottom="8dp"/>
@@ -51,13 +51,13 @@
                     android:id="@+id/team1Logo"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/srh_logo"/>
+                    android:src="@drawable/profile"/>
 
                 <TextView
                     android:id="@+id/team1Name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SRH"
+                    android:text="TEAM 1 Name"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/black"
@@ -67,7 +67,7 @@
                     android:id="@+id/team1Score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="113 (18.3)"
+                    android:text="Score"
                     android:textSize="14sp"
                     android:textColor="@color/black"
                     android:gravity="center"/>
@@ -95,13 +95,13 @@
                     android:id="@+id/team2Logo"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/kkr_logo"/>
+                    android:src="@drawable/profile"/>
 
                 <TextView
                     android:id="@+id/team2Name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="KKR"
+                    android:text="TEAM 2 NAME"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/black"
@@ -111,7 +111,7 @@
                     android:id="@+id/team2Score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="114/2 (10.3)"
+                    android:text="Score"
                     android:textSize="14sp"
                     android:textColor="@color/black"
                     android:gravity="center"/>
@@ -152,6 +152,13 @@
             android:layout_height="wrap_content"
             android:text="Team 2 Name"/>
     </com.google.android.material.tabs.TabLayout>
+
+    <ProgressBar
+        android:id="@+id/detailLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
