@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/liveMatchesLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -15,14 +16,36 @@
         android:textStyle="bold"
         android:textColor="@android:color/black"
         android:layout_gravity="center_horizontal"
-        android:paddingBottom="8dp"/>
+        android:paddingBottom="8dp" />
+
+    <!-- Progress bar for loading -->
+    <ProgressBar
+        android:id="@+id/loadingLiveIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"
+        android:padding="16dp" />
+
+    <!-- No matches message -->
+    <TextView
+        android:id="@+id/noLiveMatchesText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Live Matches Available"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="16sp"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"
+        android:paddingTop="8dp" />
 
     <!-- RecyclerView for displaying live matches -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/liveMatchRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:scrollbars="vertical"
-        android:paddingTop="8dp"/>
+        android:paddingTop="8dp" />
 
 </LinearLayout>

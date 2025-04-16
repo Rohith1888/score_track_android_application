@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         bottomNav = findViewById(R.id.bottom_nav_bar)
 
         if (savedInstanceState == null) {
-            loadFragment(LoginFragment())
+            loadFragment(MatchesFragment())
             bottomNav.visibility = View.GONE // Hide BottomNav during Login
         }
 

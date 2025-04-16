@@ -6,15 +6,24 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
-class LiveMatchAdapter(private val liveMatchList: List<LiveMatch>) :
-    RecyclerView.Adapter<LiveMatchAdapter.LiveMatchViewHolder>() {
+class LiveMatchAdapter(
+    private val liveMatchList: MutableList<LiveCricketMatch> = mutableListOf(),  // Or use a common interface/base class
+    private val onItemClick: (LiveCricketMatch) -> Unit
+) : RecyclerView.Adapter<LiveMatchAdapter.LiveMatchViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LiveMatchViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.match_item_live, parent, false)
         return LiveMatchViewHolder(view)
     }
+    fun updateData(newList: List<LiveCricketMatch>) {
+        (liveMatchList as MutableList).clear()
+        liveMatchList.addAll(newList)
+        notifyDataSetChanged()
+    }
+
 
     override fun onBindViewHolder(holder: LiveMatchViewHolder, position: Int) {
         val match = liveMatchList[position]
@@ -27,17 +36,22 @@ class LiveMatchAdapter(private val liveMatchList: List<LiveMatch>) :
         holder.team2.text = match.team2
         holder.team2Score.text = match.team2Score
 
-        // Load Team 1 Logo
-        match.team1LogoRes?.let { holder.team1Logo.setImageResource(it) }
-        // Load Team 2 Logo
-        match.team2LogoRes?.let { holder.team2Logo.setImageResource(it) }
-        // Set LIVE Indicator visibility
-        if (match.isLive) {
-            holder.liveIndicator.visibility = View.VISIBLE
-        } else {
-            holder.liveIndicator.visibility = View.GONE
+        // Load team logos using Glide (or any other image loader)
+        Glide.with(holder.itemView.context)
+            .load(match.team1Logo)  // Assuming team1Logo is a URL or local path
+            .into(holder.team1Logo)
+
+        Glide.with(holder.itemView.context)
+            .load(match.team2Logo)  // Assuming team1Logo is a URL or local path
+            .into(holder.team2Logo)
+
+        holder.liveIndicator.visibility = if (match.live) View.VISIBLE else View.GONE
+
+        holder.itemView.setOnClickListener {
+            onItemClick(match)
         }
     }
+
 
     override fun getItemCount() = liveMatchList.size
 
