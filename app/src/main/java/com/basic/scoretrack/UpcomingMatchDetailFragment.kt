@@ -28,6 +28,8 @@ class UpcomingMatchDetailFragment : Fragment() {
     private var team2: String? = null
     private var team2Logo: String? = null
     private var sportType: String? = null
+    private lateinit var loadingIndicator: View
+
 
     private lateinit var team1Players: List<PlayerResponseUpcoming>
     private lateinit var team2Players: List<PlayerResponseUpcoming>
@@ -56,6 +58,7 @@ class UpcomingMatchDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        loadingIndicator = view.findViewById(R.id.loadingIndicator)
 
         val stadiumText: TextView = view.findViewById(R.id.matchStadium)
         val matchDate: TextView = view.findViewById(R.id.matchDate)
@@ -180,5 +183,6 @@ class UpcomingMatchDetailFragment : Fragment() {
             }
         }
     }
+
 }
 

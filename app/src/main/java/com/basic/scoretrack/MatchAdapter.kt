@@ -6,12 +6,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-
 import com.bumptech.glide.Glide
 
 class MatchAdapter(
-    private val matches: List<Cricket_UpComing>,
-    private val onItemClick: (Cricket_UpComing) -> Unit
+    private val matches: List<Any>,  // Generalize the list type to handle both Cricket and Kabaddi
+    private val onItemClick: (Any) -> Unit  // Generalize the onClick handler
 ) : RecyclerView.Adapter<MatchAdapter.MatchViewHolder>() {
 
     class MatchViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -32,21 +31,43 @@ class MatchAdapter(
 
     override fun onBindViewHolder(holder: MatchViewHolder, position: Int) {
         val match = matches[position]
-        // Displaying dynamic match data
-        holder.stadiumText.text = match.stadium
-        holder.matchDate.text = match.date
-        holder.matchTime.text = "Starts at: ${match.time}"
-        holder.team1Name.text = match.team1
-        holder.team2Name.text = match.team2
 
-        // Use Glide to load logos from URLs or resource names
-        Glide.with(holder.itemView.context)
-            .load(match.team1Logo)  // Assuming team1Logo is a URL or local path to the image
-            .into(holder.team1Logo)
+        when (match) {
+            is Cricket_UpComing -> {
+                // Displaying Cricket match data
+                holder.stadiumText.text = match.stadium
+                holder.matchDate.text = match.date
+                holder.matchTime.text = "Starts at: ${match.time}"
+                holder.team1Name.text = match.team1
+                holder.team2Name.text = match.team2
 
-        Glide.with(holder.itemView.context)
-            .load(match.team2Logo)  // Assuming team2Logo is a URL or local path to the image
-            .into(holder.team2Logo)
+                // Use Glide to load logos for Cricket
+                Glide.with(holder.itemView.context)
+                    .load(match.team1Logo)  // Assuming team1Logo is a URL or local path
+                    .into(holder.team1Logo)
+
+                Glide.with(holder.itemView.context)
+                    .load(match.team2Logo)  // Assuming team2Logo is a URL or local path
+                    .into(holder.team2Logo)
+            }
+            is Kabaddi_UpComing -> {
+                // Displaying Kabaddi match data
+                holder.stadiumText.text = match.stadium
+                holder.matchDate.text = match.date
+                holder.matchTime.text = "Starts at: ${match.time}"
+                holder.team1Name.text = match.team1
+                holder.team2Name.text = match.team2
+
+                // Use Glide to load logos for Kabaddi
+                Glide.with(holder.itemView.context)
+                    .load(match.team1Logo)  // Assuming team1Logo is a URL or local path
+                    .into(holder.team1Logo)
+
+                Glide.with(holder.itemView.context)
+                    .load(match.team2Logo)  // Assuming team2Logo is a URL or local path
+                    .into(holder.team2Logo)
+            }
+        }
 
         // Handle item click to pass data for detailed view
         holder.itemView.setOnClickListener {
@@ -58,12 +79,23 @@ class MatchAdapter(
 }
 
 data class Cricket_UpComing(
-    val  id: Int,
+    val id: Int,
     val stadium: String,
     val date: String,
     val time: String,
     val team1: String,
-    val team1Logo: String,  // Updated to accept a String (URL or image resource name)
+    val team1Logo: String,  // URL or image resource name
     val team2: String,
-    val team2Logo: String   // Updated to accept a String (URL or image resource name)
+    val team2Logo: String   // URL or image resource name
+)
+
+data class Kabaddi_UpComing(
+    val id: Int,
+    val stadium: String,
+    val date: String,
+    val time: String,
+    val team1: String,
+    val team1Logo: String,  // URL or image resource name
+    val team2: String,
+    val team2Logo: String   // URL or image resource name
 )

@@ -54,8 +54,8 @@
 
                 <ImageView
                     android:id="@+id/team1Logo"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:scaleType="fitCenter"/>
 
                 <TextView

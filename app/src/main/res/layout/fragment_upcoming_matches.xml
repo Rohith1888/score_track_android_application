@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:background="@android:color/white"
     android:padding="16dp">
+
     <TextView
         android:id="@+id/sportTitle"
         android:layout_width="wrap_content"
@@ -15,10 +16,33 @@
         android:textColor="@android:color/black"
         android:layout_gravity="center_horizontal"
         android:paddingBottom="8dp"/>
+    <!-- Loading indicator -->
+    <ProgressBar
+        android:id="@+id/loadingIndicator"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"/>
+
+
     <!-- RecyclerView for Match List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/matchRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"/>
+
+    <!-- TextView for "No Matches" message -->
+    <TextView
+        android:id="@+id/noMatchesText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Matches Available"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"/>
 </LinearLayout>

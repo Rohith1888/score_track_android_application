@@ -28,24 +28,22 @@ class FinishedMatchDetailFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments != null) {
-            stadium = requireArguments().getString("STADIUM")
-            date = requireArguments().getString("DATE")
-            result = requireArguments().getString("RESULT")
-            team1 = requireArguments().getString("TEAM1")
-            team1Logo = requireArguments().getInt("TEAM1_LOGO")
-            team2 = requireArguments().getString("TEAM2")
-            team2Logo = requireArguments().getInt("TEAM2_LOGO")
-            sportType = requireArguments().getString("SPORT_TYPE")
-            team1Score = requireArguments().getString("TEAM1_SCORE")
-            team2Score = requireArguments().getString("TEAM2_SCORE")
+        arguments?.let {
+            stadium = it.getString("STADIUM")
+            date = it.getString("DATE")
+            result = it.getString("RESULT")
+            team1 = it.getString("TEAM1")
+            team2 = it.getString("TEAM2")
+            sportType = it.getString("SPORT_TYPE")
+            team1Logo = it.getInt("TEAM1_LOGO")
+            team2Logo = it.getInt("TEAM2_LOGO")
+            team1Score = it.getString("TEAM1_SCORE")
+            team2Score = it.getString("TEAM2_SCORE")
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_finished_match_detail, container, false)
     }
@@ -53,15 +51,16 @@ class FinishedMatchDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val stadiumName: TextView = view.findViewById<TextView>(R.id.matchStadium)
-        val dateText: TextView = view.findViewById<TextView>(R.id.matchDate)
-        val resultText: TextView = view.findViewById<TextView>(R.id.matchResult)
-        val team1Image: ImageView = view.findViewById<ImageView>(R.id.team1Logo)
-        val team2Image: ImageView = view.findViewById<ImageView>(R.id.team2Logo)
-        val team1ScoreText: TextView = view.findViewById<TextView>(R.id.team1Score)
-        val team2ScoreText: TextView = view.findViewById<TextView>(R.id.team1Score)
-        val team1Name: TextView = view.findViewById<TextView>(R.id.team1Name)
-        val team2Name: TextView = view.findViewById<TextView>(R.id.team2Name)
+        val stadiumName: TextView = view.findViewById(R.id.matchStadium)
+        val dateText: TextView = view.findViewById(R.id.matchDate)
+        val resultText: TextView = view.findViewById(R.id.matchResult)
+        val team1Image: ImageView = view.findViewById(R.id.team1Logo)
+        val team2Image: ImageView = view.findViewById(R.id.team2Logo)
+        val team1ScoreText: TextView = view.findViewById(R.id.team1Score)
+        val team2ScoreText: TextView = view.findViewById(R.id.team2Score)
+        val team1Name: TextView = view.findViewById(R.id.team1Name)
+        val team2Name: TextView = view.findViewById(R.id.team2Name)
+
         stadiumName.text = stadium
         dateText.text = date
         resultText.text = result
@@ -76,48 +75,61 @@ class FinishedMatchDetailFragment : Fragment() {
         val viewPager = view.findViewById<ViewPager2>(R.id.viewPager)
 
         val teams = getPlayersForSport(sportType)
-        val pagerAdapter = ViewPagerAdapterFinished(this, teams.first.first, teams.first.second, teams.second.first, teams.second.second)
+
+        val pagerAdapter = ViewPagerAdapterFinished(
+            this,
+            sportType = sportType ?: "Cricket",
+            team1Batting = teams.first.first,
+            team1Bowling = teams.first.second,
+            team2Batting = teams.second.first,
+            team2Bowling = teams.second.second,
+            team1Kabaddi = teams.third.first,
+            team2Kabaddi = teams.third.second
+        )
+
         viewPager.adapter = pagerAdapter
 
-        TabLayoutMediator(
-            tabLayout, viewPager
-        ) { tab: TabLayout.Tab, position: Int ->
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = if (position == 0) team1 else team2
         }.attach()
     }
 
-    private fun getPlayersForSport(sport: String?): Pair<Pair<List<BattingStats>, List<BowlingStats>>, Pair<List<BattingStats>, List<BowlingStats>>> {
-        return if ("Cricket" == sport) {
-            Pair(Pair(cricketTeam1BattingStats, cricketTeam1BowlingStats), Pair(cricketTeam2BattingStats, cricketTeam2BowlingStats))
+    // Modified to return a Triple for Kabaddi too
+    private fun getPlayersForSport(sport: String?): Triple<Pair<List<BattingStats>, List<BowlingStats>>, Pair<List<BattingStats>, List<BowlingStats>>, Pair<List<KabaddiStats>, List<KabaddiStats>>> {
+        return if (sport == "Cricket") {
+            Triple(
+                Pair(cricketTeam1BattingStats, cricketTeam1BowlingStats),
+                Pair(cricketTeam2BattingStats, cricketTeam2BowlingStats),
+                Pair(emptyList(), emptyList()) // No kabaddi data
+            )
         } else {
-            Pair(Pair(cricketTeam1BattingStats, cricketTeam1BowlingStats), Pair(cricketTeam2BattingStats, cricketTeam2BowlingStats))
+            Triple(
+                Pair(emptyList(), emptyList()),
+                Pair(emptyList(), emptyList()),
+                Pair(kabaddiTeam1Stats, kabaddiTeam2Stats)
+            )
         }
     }
 
-
-    // Dummy data for Team 1 - Cricket
+    // Dummy Cricket Data (same as before)
     private val cricketTeam1BattingStats = listOf(
         BattingStats("Virat Kohli", 68, 45, 7, 2, 151.11),
         BattingStats("Rohit Sharma", 102, 85, 9, 4, 120.00),
         BattingStats("Shikhar Dhawan", 33, 28, 4, 1, 117.85),
         BattingStats("Hardik Pandya", 50, 32, 3, 3, 156.25)
     )
-
     private val cricketTeam1BowlingStats = listOf(
         BowlingStats("Jasprit Bumrah", 4.0, 1, 35, 2, 8.75),
         BowlingStats("Mohammad Shami", 4.0, 0, 45, 1, 11.25),
         BowlingStats("Ravindra Jadeja", 4.0, 1, 30, 3, 7.50),
         BowlingStats("Yuzvendra Chahal", 4.0, 0, 36, 0, 9.00)
     )
-
-    // Dummy data for Team 2 - Cricket
     private val cricketTeam2BattingStats = listOf(
         BattingStats("David Warner", 45, 30, 4, 2, 150.00),
         BattingStats("Steve Smith", 67, 55, 5, 2, 121.82),
         BattingStats("Glenn Maxwell", 36, 22, 3, 1, 163.64),
         BattingStats("Matthew Wade", 52, 38, 4, 3, 136.84)
     )
-
     private val cricketTeam2BowlingStats = listOf(
         BowlingStats("Pat Cummins", 4.0, 0, 33, 2, 8.25),
         BowlingStats("Mitchell Starc", 4.0, 1, 41, 1, 10.25),
@@ -125,6 +137,19 @@ class FinishedMatchDetailFragment : Fragment() {
         BowlingStats("Kane Richardson", 4.0, 0, 38, 0, 9.50)
     )
 
+    // Dummy Kabaddi Data
+    private val kabaddiTeam1Stats = listOf(
+        KabaddiStats("Pardeep Narwal", 10, 2, 0),
+        KabaddiStats("Naveen Kumar", 8, 1, 1),
+        KabaddiStats("Surender Gill", 7, 0, 1),
+        KabaddiStats("Sandeep Narwal", 4, 4, 0)
+    )
+    private val kabaddiTeam2Stats = listOf(
+        KabaddiStats("Fazel Atrachali", 2, 6, 0),
+        KabaddiStats("Maninder Singh", 9, 1, 0),
+        KabaddiStats("Rahul Chaudhari", 6, 0, 1),
+        KabaddiStats("Neeraj Kumar", 3, 5, 1)
+    )
 
     companion object {
         fun newInstance(
@@ -157,23 +182,35 @@ class FinishedMatchDetailFragment : Fragment() {
     }
 }
 
+
 class ViewPagerAdapterFinished(
     fragment: Fragment,
-    private val team1Batting: List<BattingStats>,
-    private val team1Bowling: List<BowlingStats>,
-    private val team2Batting: List<BattingStats>,
-    private val team2Bowling: List<BowlingStats>
+    private val sportType: String,
+    private val team1Batting: List<BattingStats> = emptyList(),
+    private val team1Bowling: List<BowlingStats> = emptyList(),
+    private val team2Batting: List<BattingStats> = emptyList(),
+    private val team2Bowling: List<BowlingStats> = emptyList(),
+    private val team1Kabaddi: List<KabaddiStats> = emptyList(),
+    private val team2Kabaddi: List<KabaddiStats> = emptyList()
 ) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment {
-        return if (position == 0)
-            PlayerListFragmentFinished(team1Batting, team1Bowling)
-        else
-            PlayerListFragmentFinished(team2Batting, team2Bowling)
+        return if (sportType == "Cricket") {
+            if (position == 0)
+                PlayerListFragmentFinished(team1Batting, team1Bowling, emptyList(), "Cricket")
+            else
+                PlayerListFragmentFinished(team2Batting, team2Bowling, emptyList(), "Cricket")
+        } else {
+            if (position == 0)
+                PlayerListFragmentFinished(emptyList(), emptyList(), team1Kabaddi, "Kabaddi")
+            else
+                PlayerListFragmentFinished(emptyList(), emptyList(), team2Kabaddi, "Kabaddi")
+        }
     }
 }
+
 
 data class BattingStats(
     val playerName: String,
@@ -195,27 +232,42 @@ data class BowlingStats(
 
 class PlayerListFragmentFinished(
     private val battingList: List<BattingStats>,
-    private val bowlingList: List<BowlingStats>
+    private val bowlingList: List<BowlingStats>,
+    private val kabaddiList: List<KabaddiStats> = emptyList(),
+    private val sportType: String
 ) : Fragment() {
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_player_list_finished, container, false)
+    ): View {
+        return if (sportType == "Cricket") {
+            inflater.inflate(R.layout.fragment_player_list_finished, container, false)
+        } else {
+            inflater.inflate(R.layout.fragment_player_list_kabaddi, container, false)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val battingRecyclerView = view.findViewById<RecyclerView>(R.id.battingRecyclerView)
-        val bowlingRecyclerView = view.findViewById<RecyclerView>(R.id.bowlingRecyclerView)
+        if (sportType == "Cricket") {
+            val battingRecyclerView = view.findViewById<RecyclerView>(R.id.battingRecyclerView)
+            val bowlingRecyclerView = view.findViewById<RecyclerView>(R.id.bowlingRecyclerView)
 
-        battingRecyclerView.layoutManager = LinearLayoutManager(context)
-        bowlingRecyclerView.layoutManager = LinearLayoutManager(context)
+            battingRecyclerView.layoutManager = LinearLayoutManager(context)
+            bowlingRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        battingRecyclerView.adapter = BattingAdapter(battingList)
-        bowlingRecyclerView.adapter = BowlingAdapter(bowlingList)
+            battingRecyclerView.adapter = BattingAdapter(battingList)
+            bowlingRecyclerView.adapter = BowlingAdapter(bowlingList)
+        } else {
+            val kabaddiRecyclerView = view.findViewById<RecyclerView>(R.id.kabaddiRecyclerView)
+            kabaddiRecyclerView.layoutManager = LinearLayoutManager(context)
+            kabaddiRecyclerView.adapter = KabaddiAdapter(kabaddiList)
+        }
     }
 }
+
+
 
 class BowlingAdapter(private val bowlingList: List<BowlingStats>) :
     RecyclerView.Adapter<BowlingAdapter.BowlingViewHolder>() {
@@ -277,4 +329,37 @@ class BattingAdapter(private val battingList: List<BattingStats>) :
     }
 
     override fun getItemCount() = battingList.size
+}
+data class KabaddiStats(
+    val playerName: String,
+    val raidPoints: Int,
+    val tacklePoints: Int,
+    val totalPoints: Int
+)
+
+class KabaddiAdapter(private val playerList: List<KabaddiStats>) :
+    RecyclerView.Adapter<KabaddiAdapter.KabaddiViewHolder>() {
+
+    inner class KabaddiViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val playerName: TextView = view.findViewById(R.id.playerName)
+        val raidPoints: TextView = view.findViewById(R.id.raidPoints)
+        val tacklePoints: TextView = view.findViewById(R.id.tacklePoints)
+        val totalPoints: TextView = view.findViewById(R.id.totalPoints)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KabaddiViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_kabaddi_score, parent, false)
+        return KabaddiViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: KabaddiViewHolder, position: Int) {
+        val player = playerList[position]
+        holder.playerName.text = player.playerName
+        holder.raidPoints.text = player.raidPoints.toString()
+        holder.tacklePoints.text = player.tacklePoints.toString()
+        holder.totalPoints.text = player.totalPoints.toString()
+    }
+
+    override fun getItemCount(): Int = playerList.size
 }
